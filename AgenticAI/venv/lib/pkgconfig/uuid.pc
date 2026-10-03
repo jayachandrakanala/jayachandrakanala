@@ -1,0 +1,11 @@
+prefix=/workspaces/jayachandrakanala/AgenticAI/venv
+exec_prefix=/workspaces/jayachandrakanala/AgenticAI/venv
+libdir=/workspaces/jayachandrakanala/AgenticAI/venv/lib
+includedir=/workspaces/jayachandrakanala/AgenticAI/venv/include
+
+Name: uuid
+Description: Universally unique id library
+Version: 2.32.1
+Requires:
+Cflags: -I${includedir}/uuid
+Libs: -L${libdir} -luuid
