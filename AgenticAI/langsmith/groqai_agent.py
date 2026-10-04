@@ -7,11 +7,10 @@ from langgraph.graph.message import add_messages
 from langgraph.prebuilt import ToolNode
 from langchain_core.tools import tool
 from langchain_core.messages import BaseMessage
-import os
 from dotenv import load_dotenv
 
+import os
 load_dotenv()
-
 os.environ["GROQ_API_KEY"]=os.getenv("GROQ_API_KEY")
 os.environ["LANGSMITH_API_KEY"]=os.getenv("LANGCHAIN_API_KEY")
 
@@ -20,7 +19,7 @@ class State(TypedDict):
 
 model=ChatGroq(model="qwen/qwen3.8-27b", max_tokens=200)
 
-def make_default_graph():
+def build_model_graph():
     graph_workflow=StateGraph(State)
 
     def call_model(state):
@@ -33,7 +32,7 @@ def make_default_graph():
     agent=graph_workflow.compile()
     return agent
 
-def make_alternative_graph():
+def build_model_with_tools_graph():
     """Make a tool-calling agent"""
 
     @tool
@@ -58,10 +57,17 @@ def make_alternative_graph():
     graph_workflow.add_node("agent", call_model)
     graph_workflow.add_node("tools", tool_node)
     graph_workflow.add_edge(START, "agent")
-    graph_workflow.add_conditional_edges("agent", should_continue)
+    graph_workflow.add_conditional_edges(
+    "agent",
+    should_continue,
+    {
+        "tools": "tools",  # maps return value "tools" -> "tools" node
+        END: END           # maps return value END -> __end__ node
+    }
+)
     graph_workflow.add_edge("tools", "agent")
 
     agent = graph_workflow.compile()
     return agent
 
-agent=make_alternative_graph()
+agent=build_model_with_tools_graph()
