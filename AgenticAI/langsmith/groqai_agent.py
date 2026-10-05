@@ -26,8 +26,8 @@ def build_model_graph():
         return {"messages":[model.invoke(state['messages'])]}
     
     graph_workflow.add_node("agent", call_model)
-    graph_workflow.add_edge("agent", END)
     graph_workflow.add_edge(START, "agent")
+    graph_workflow.add_edge("agent", END)
 
     agent=graph_workflow.compile()
     return agent
@@ -40,9 +40,13 @@ def build_model_with_tools_graph():
         """Adds two numbers."""
         return a + b
 
-    tool_node = ToolNode([add])
-    model_with_tools = model.bind_tools([add])
-    
+    @tool
+    def sub(a: float, b: float):
+        """Substracts two numbers."""
+        return a - b
+
+    tools_node = ToolNode([add, sub])
+    model_with_tools = model.bind_tools([add, sub])    
     def call_model(state):
         return {"messages": [model_with_tools.invoke(state["messages"])]}
 
@@ -53,18 +57,18 @@ def build_model_with_tools_graph():
             return END
 
     graph_workflow = StateGraph(State)
-
     graph_workflow.add_node("agent", call_model)
-    graph_workflow.add_node("tools", tool_node)
+    graph_workflow.add_node("tools", tools_node)
+
     graph_workflow.add_edge(START, "agent")
     graph_workflow.add_conditional_edges(
-    "agent",
-    should_continue,
-    {
-        "tools": "tools",  # maps return value "tools" -> "tools" node
-        END: END           # maps return value END -> __end__ node
-    }
-)
+        "agent",
+        should_continue,
+        {
+            "tools": "tools",  # maps return value "tools" -> "tools" node
+            END: END           # maps return value END -> __end__ node
+        }
+    )
     graph_workflow.add_edge("tools", "agent")
 
     agent = graph_workflow.compile()
