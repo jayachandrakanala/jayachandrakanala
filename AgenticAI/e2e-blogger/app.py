@@ -44,3 +44,6 @@ async def create_blogs(request:Request):
 if __name__=="__main__":
     uvicorn.run("app:app",host="0.0.0.0",port=8000,reload=True)
 
+@app.get("/")
+async def root():
+    return {"message": "Blogger API is running. Visit /docs for OpenAPI documentation."}
