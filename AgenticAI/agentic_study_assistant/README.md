@@ -15,29 +15,7 @@ Implement the Multi-Agent "Agentic AI Study Assistant" using LangGraph orchestra
 
 Organize your Python project structure as follows:
 
-agentic_study_assistant/
-│
-├── .env # Environment variables (API Keys)
-├── requirements.txt # Project dependencies
-├── app.py # Main Streamlit Application entrypoint
-│
-├── styles/
-│ └── custom_css.py # Custom CSS for Cyberpunk / Dark / Custom Themes
-│
-├── agents/
-│ ├── **init**.py
-│ ├── state.py # LangGraph AgentState definition
-│ ├── summarizer.py # Agent 1: Summarize Agent
-│ ├── quiz_generator.py # Agent 2: Quiz Agent
-│ └── reviewer.py # Agent 3: Reviewer Agent & Evaluator
-│
-├── graph/
-│ ├── **init**.py
-│ └── workflow.py # LangGraph Workflow graph construction
-│
-└── utils/
-├── **init**.py
-└── document_parser.py # Document loader for PDF, TXT, DOCX
+![alt text](image-11.png)
 
 ##### Real-time Progressive Tab Population:
 
