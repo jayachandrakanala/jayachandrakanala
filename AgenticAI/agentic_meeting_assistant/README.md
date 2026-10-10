@@ -15,8 +15,6 @@ Implement the multi-agent AI Meeting Assistant built with LangGraph, Streamlit, 
 
 Organize your Python project structure as follows:
 
-![alt text](image.png)
-
                    [ Input Meeting Transcript ]
                                 │
                                 ▼
@@ -92,6 +90,8 @@ Agents to execute the multi-agent workflow.
 ![alt text](image-8.png)
 
 ![alt text](image-9.png)
+
+![alt text](image-10.png)
 
 ![alt text](image-2.png)
 
